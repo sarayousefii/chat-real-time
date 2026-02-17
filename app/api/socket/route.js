@@ -1,10 +1,8 @@
 // app/api/socket/route.ts
 import { Server } from "socket.io";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { verifyJwt } from "@/lib/jwt";
+import { verifyToken } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 
 let io= null;
 
@@ -26,7 +24,7 @@ export async function GET(req) {
     if (!token) return next(new Error("No token provided"));
 
     try {
-      const user = verifyJwt(token);
+      const user = verifyToken(token);
       socket.data.user = user;
       next();
     } catch {
